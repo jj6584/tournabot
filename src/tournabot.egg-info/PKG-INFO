@@ -1,3 +1,17 @@
+Metadata-Version: 2.4
+Name: tournabot
+Version: 0.1.0
+Summary: Telegram bot for Smoothcomp team schedules
+Requires-Python: >=3.11
+Description-Content-Type: text/markdown
+Requires-Dist: python-telegram-bot==21.7
+Requires-Dist: httpx==0.28.1
+Requires-Dist: beautifulsoup4==4.12.3
+Requires-Dist: python-dotenv==1.0.1
+Requires-Dist: pydantic==2.10.6
+Provides-Extra: dev
+Requires-Dist: pytest==8.3.4; extra == "dev"
+
 # TournaBot
 
 Telegram bot for tracking Smoothcomp events in the Philippines and listing your team competitors, schedule time, mat number, and a quick bracket-style matchup view.
@@ -36,7 +50,6 @@ Set these values in `.env`:
 - `TEAM_AFFILIATE_KEYWORDS`: comma-separated keywords used to identify your team.
 - `SMOOTHCOMP_DEFAULT_COUNTRY`: defaults to `Philippines`.
 - `SMOOTHCOMP_EVENTS_URL`: defaults to `https://smoothcomp.com/en/events/upcoming`.
-- `SMOOTHCOMP_EVENTS_FALLBACK_URL`: defaults to `https://compseek.net/events/smoothcomp`.
 
 ## Run
 
@@ -50,33 +63,18 @@ or
 python -m tournabot.main
 ```
 
-When it starts correctly, it stays in the foreground and keeps polling Telegram for updates.
-That is expected behavior.
-
 ## Telegram commands
 
 - `/start`
 - `/help`
-- `/events` (optional discovery list)
+- `/events` (uses current year)
 - `/events 2026`
 - `/upcoming` (alias)
 - `/schedule` (alias)
-- `/debugevents` (shows what direct Smoothcomp scraping detects + fallback event count)
-
-Primary flow:
-
-- Send event URL directly:
-  - `https://bjjfphilippines.smoothcomp.com/en/event/26935`
-- Or send event ID:
-  - `26935` or `event id: 26935`
-- Or send event name + year:
-  - `Hyperfly Asian Open 2026`
-  - bot returns candidate matches and asks you to confirm one
 
 ## Notes about Smoothcomp scraping
 
 Smoothcomp does not provide a stable public API for all event/competitor schedule details, so this bot uses HTML parsing with safe fallbacks.
-If the direct Smoothcomp upcoming page is JS-rendered or anti-bot filtered, the bot falls back to the CompSeek Smoothcomp event index and still returns Smoothcomp event links.
 
 If parsing misses fields due to page changes, tune logic in:
 
@@ -93,11 +91,3 @@ Primary areas to adjust:
 ```bash
 pytest -q
 ```
-
-## Troubleshooting
-
-- If it looks like it is hanging with no output, check logs. The app now logs startup and connection errors.
-- If you see `Temporary failure in name resolution` or `NetworkError`, your machine cannot reach Telegram API.
-  - Verify internet connectivity.
-  - Check DNS settings.
-  - Check firewall/proxy/VPN rules that may block `api.telegram.org`.

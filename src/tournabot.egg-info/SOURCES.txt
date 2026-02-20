@@ -1,0 +1,16 @@
+README.md
+pyproject.toml
+src/tournabot/__init__.py
+src/tournabot/bot.py
+src/tournabot/config.py
+src/tournabot/formatters.py
+src/tournabot/main.py
+src/tournabot/models.py
+src/tournabot/smoothcomp.py
+src/tournabot.egg-info/PKG-INFO
+src/tournabot.egg-info/SOURCES.txt
+src/tournabot.egg-info/dependency_links.txt
+src/tournabot.egg-info/entry_points.txt
+src/tournabot.egg-info/requires.txt
+src/tournabot.egg-info/top_level.txt
+tests/test_formatters.py
